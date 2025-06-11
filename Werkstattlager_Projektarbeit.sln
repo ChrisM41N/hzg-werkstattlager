@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35514.174
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WerkstattlagerAPI", "WerkstattlagerAPI\WerkstattlagerAPI.csproj", "{11DEBF5E-C417-4CEE-AEE8-C6EFF2AB7F16}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WerkstattlagerViewLogic", "WerkstattlagerViewModels\WerkstattlagerViewLogic.csproj", "{EF13AB08-31C4-4457-97D5-6581A4FE2448}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WerkstattlagerUI", "WerkstattlagerUI\WerkstattlagerUI.csproj", "{589989D3-931C-4D65-9A0C-01DB2FFA9C58}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WerkstattlagerIntegration", "WerkstattlagerIntegrationTests\WerkstattlagerIntegration.csproj", "{E334EE7A-BA04-4C36-AC12-605106CF340D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{11DEBF5E-C417-4CEE-AEE8-C6EFF2AB7F16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{11DEBF5E-C417-4CEE-AEE8-C6EFF2AB7F16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{11DEBF5E-C417-4CEE-AEE8-C6EFF2AB7F16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{11DEBF5E-C417-4CEE-AEE8-C6EFF2AB7F16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EF13AB08-31C4-4457-97D5-6581A4FE2448}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EF13AB08-31C4-4457-97D5-6581A4FE2448}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EF13AB08-31C4-4457-97D5-6581A4FE2448}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EF13AB08-31C4-4457-97D5-6581A4FE2448}.Release|Any CPU.Build.0 = Release|Any CPU
+		{589989D3-931C-4D65-9A0C-01DB2FFA9C58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{589989D3-931C-4D65-9A0C-01DB2FFA9C58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{589989D3-931C-4D65-9A0C-01DB2FFA9C58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{589989D3-931C-4D65-9A0C-01DB2FFA9C58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E334EE7A-BA04-4C36-AC12-605106CF340D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E334EE7A-BA04-4C36-AC12-605106CF340D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E334EE7A-BA04-4C36-AC12-605106CF340D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E334EE7A-BA04-4C36-AC12-605106CF340D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

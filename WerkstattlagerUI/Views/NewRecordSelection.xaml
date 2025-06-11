@@ -1,0 +1,20 @@
+﻿<Window x:Class="WerkstattlagerUI.Views.NewRecordSelection"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WerkstattlagerUI.Views"
+        mc:Ignorable="d"
+        Title="Neuer Datensatz" Height="120" Width="540" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Margin="20">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <Button x:Name="NewDeviceButton" Grid.Column="0" Content="Neues Gerätemodell" Style="{StaticResource Button}" VerticalAlignment="Center" Click="NewDeviceButton_Click" />
+        <Button x:Name="NewCategoryButton" Grid.Column="1" Content="Neue Kategorie " Style="{StaticResource Button}" VerticalAlignment="Center" Click="NewCategoryButton_Click" />
+        <Button x:Name="NewManufacturerButton" Grid.Column="2" Content="Neuer Hersteller" Style="{StaticResource Button}" VerticalAlignment="Center" Click="NewManufacturerButton_Click" />
+    </Grid>
+</Window>
