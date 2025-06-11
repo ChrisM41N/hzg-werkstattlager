@@ -1,10 +1,9 @@
 # HZG-Werkstattlager
 Meine betriebliche Projektarbeit und IHK-Abschlussprojekt. Aufgrund betrieblicher Umstrukturierungen wird das Projekt nicht weiterentwickelt oder produktiv eingesetzt, daher habe ich beschlossen den Quellcode öffentlich zu archivieren.
 
-Das Projekt bildet ein kleines Fullstack-Projekt ab, dass innerhalb 80 Stunden ungesetzt wurde.
+Das Projekt bildet ein kleines Fullstack-Projekt ab, dass innerhalb 80 Stunden umgesetzt wurde.
 
 Auszüge aus der Projektdokumentation:
-
 ## Projekdefinition
 ### Projektumfeld
 Die Diakonie Herzogsägmühle ist als Teil der Diakonie München und Oberbayern eine soziale Einrichtung mit Firmensitz in Herzogsägmühle, ein Ortsteil der Marktgemeinde Peiting im Landkreis Weilheim-Schongau. In diversen sozialen Einrichtungen arbeiten 2.200 Mitarbeitende an der Begleitung und Betreuung von 4.500 hilfebedürftiger Menschen an rund 200 Standorten innerhalb von acht Landkreisen in Oberbayern.
