@@ -22,7 +22,14 @@ namespace WerkstattlagerAPI
                 if (environment == "Testing")
                     options.UseInMemoryDatabase("TestDatabase");
                 else
-                    options.UseSqlServer(ConfigurationManager.ConnectionStrings["Werkstattlager"]?.ConnectionString);
+                {
+                    var connectionString = ConfigurationManager.ConnectionStrings["Werkstattlager"]?.ConnectionString;
+
+                    if (!String.IsNullOrEmpty(connectionString))
+                        options.UseSqlServer(connectionString);
+                    else
+                        options.UseInMemoryDatabase("FallbackDatabase");
+                }
             }
         }
 
