@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System.Windows;
 using System.Windows.Controls;
 using WerkstattlagerAPI.Models;
 using WerkstattlagerUI.Views;
@@ -30,11 +31,17 @@ namespace WerkstattlagerUI
             _deviceOverview.Error += message => MessageBox.Show(message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
             _categoryOverview.Error += message => MessageBox.Show(message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
             _manufacturerOverview.Error += message => MessageBox.Show(message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
+
+            App.Current.DispatcherUnhandledException += (sender, e) =>
+            {
+                MessageBox.Show(e.Exception.Message, "Unbehandelte Ausnahme", MessageBoxButton.OK, MessageBoxImage.Error);
+                e.Handled = true;
+            };
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            new CreateItemWindow(_inventory, _deviceOverview).ShowDialog();
+            ActivatorUtilities.CreateInstance<CreateItemWindow>(App.RootServiceProvider).ShowDialog();
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
@@ -45,14 +52,14 @@ namespace WerkstattlagerUI
         private void UpdateItem_Click (object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is Item item)
-                new UpdateItemWindow(_inventory, _deviceOverview, item).ShowDialog();
+                ActivatorUtilities.CreateInstance<UpdateItemWindow>(App.RootServiceProvider, item).ShowDialog();
         }
 
         private void MoveItem_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is Item item)
             {
-                var moveItemWindow = new MoveItemWindow(_inventory);
+                var moveItemWindow = ActivatorUtilities.CreateInstance<MoveItemWindow>(App.RootServiceProvider);
                 if (item.IsInInventory)
                     moveItemWindow.Title = "Item auslagern";
                 else
@@ -63,7 +70,7 @@ namespace WerkstattlagerUI
 
         private void NewRecordButton_Click(object sender, RoutedEventArgs e)
         {
-            new NewRecordSelection(_deviceOverview, _categoryOverview, _manufacturerOverview).ShowDialog();
+            ActivatorUtilities.CreateInstance<NewRecordSelection>(App.RootServiceProvider).ShowDialog();
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)

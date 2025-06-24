@@ -1,18 +1,27 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WerkstattlagerAPI;
 using WerkstattlagerViewLogic.ViewModels;
+using Xunit.Abstractions;
 
 namespace WerkstattlagerIntegration.Tests
 {
-    public class DeviceOverviewTest(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
+    public class DeviceOverviewTest : TestBase, IClassFixture<DatabaseFixture>
     {
-        private readonly DeviceOverview _deviceOverview = new();
-        private readonly DatabaseFixture _fixture = fixture;
-        private readonly InventoryContext _context = fixture.Context;
+        private readonly DeviceOverview _deviceOverview;
+        private readonly DatabaseFixture _fixture;
+        private readonly InventoryContext _context;
+
+        public DeviceOverviewTest(DatabaseFixture fixture, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+            _fixture = fixture;
+            _context = fixture.Context;
+            _deviceOverview = RootServiceProvider.GetRequiredService<DeviceOverview>();
+        }
 
         [Fact]
         public async Task TestCreateDevice()

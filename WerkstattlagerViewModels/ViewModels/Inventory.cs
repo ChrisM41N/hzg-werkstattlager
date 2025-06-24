@@ -2,14 +2,14 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using WerkstattlagerAPI;
 using WerkstattlagerAPI.Models;
 
 namespace WerkstattlagerViewLogic.ViewModels;
 
-public partial class Inventory : ObservableObject
+public partial class Inventory : ViewModelBase
 {
     [ObservableProperty] private Item? selectedItem;
     [ObservableProperty] private string? searchText;
@@ -22,7 +22,7 @@ public partial class Inventory : ObservableObject
 
     public event Action<string>? Error;
 
-    public Inventory()
+    public Inventory(IDbContextFactory<InventoryContext> dbContextFactory, ILogger<Inventory>? logger = null) : base(logger, dbContextFactory)
     {
         _ = ReadItems();
     }
@@ -31,16 +31,15 @@ public partial class Inventory : ObservableObject
     {
         try
         {
-            using var context = new InventoryContext();
+            using var context = await DbContextFactory.CreateDbContextAsync();
             context.Items.Add(newItem);
             await context.SaveChangesAsync();
             ItemsIn.Add(newItem);
-            await ReadItems();
         }
-        catch(DbUpdateException DbException)
+        catch (DbUpdateException DbException)
         {
             string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
-            Debug.WriteLine(errorMessage);
+            Logger?.LogDebug(DbException, "{message}", errorMessage);
             Error?.Invoke(errorMessage);
         }
     }
@@ -48,18 +47,15 @@ public partial class Inventory : ObservableObject
     [RelayCommand]
     public async Task ReadItems()
     {
-        using var context = new InventoryContext();
+        using var context = await DbContextFactory.CreateDbContextAsync();
 
-        ItemsIn.Clear();
-        ItemsOut.Clear();
+        var itemsQuery = context.Items
+            .Include(i => i.Device)
+            .Include(i => i.Device!.Category)
+            .Include(i => i.Device!.Manufacturer);
 
-        var itemsIn = await context.Items.Include(i => i.Device).Include(i => i.Device!.Category).Include(i => i.Device!.Manufacturer).Where(i => i.IsInInventory == true).ToListAsync();
-        foreach (var item in itemsIn)
-            ItemsIn.Add(item);
-
-        var itemsOut = await context.Items.Include(i => i.Device).Include(i => i.Device!.Category).Include(i => i.Device!.Manufacturer).Where(i => i.IsInInventory == false).ToListAsync();
-        foreach (var item in itemsOut)
-            ItemsOut.Add(item);
+        ItemsIn = new(await itemsQuery.Where(i => i.IsInInventory == true).ToListAsync());
+        ItemsOut = new(await itemsQuery.Where(i => i.IsInInventory == false).ToListAsync());
 
         ItemCount = $"{ItemsIn.Count} Geräte im Lager";
 
@@ -71,15 +67,15 @@ public partial class Inventory : ObservableObject
     {
         try
         {
-            using var context = new InventoryContext();
+            using var context = await DbContextFactory.CreateDbContextAsync();
             context.Update(updatedItem);
             await context.SaveChangesAsync();
             await ReadItems();
         }
-        catch(DbUpdateException DbException)
+        catch (DbUpdateException DbException)
         {
             string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
-            Debug.WriteLine(errorMessage);
+            Logger?.LogDebug(DbException, "{message}", errorMessage);
             Error?.Invoke(errorMessage);
         }
     }
@@ -89,7 +85,7 @@ public partial class Inventory : ObservableObject
     {
         try
         {
-            using var context = new InventoryContext();
+            using var context = await DbContextFactory.CreateDbContextAsync();
             if (SelectedItem != null)
             {
                 context.Items.Remove(SelectedItem);
@@ -99,13 +95,13 @@ public partial class Inventory : ObservableObject
                 else
                     ItemsOut.Remove(SelectedItem);
                 SelectedItem = null;
-                await ReadItems();
+                //await ReadItems();
             }
         }
-        catch(DbUpdateException DbException)
+        catch (DbUpdateException DbException)
         {
             string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
-            Debug.WriteLine(errorMessage);
+            Logger?.LogDebug(DbException, "{message}", errorMessage);
             Error?.Invoke(errorMessage);
         }
     }
@@ -132,26 +128,25 @@ public partial class Inventory : ObservableObject
 
     public void SearchItems(string search)
     {
-         var filteredItemsIn = AllItemsIn.Where(item =>
-         item.Id!.Contains(
-            search, StringComparison.OrdinalIgnoreCase) ||
-        (item.SerialNumber!.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
-        item.Device!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-        item.Device.Category!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-        item.Device.Manufacturer!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-        (item.CommentIn != null && item.CommentIn.Contains(search, StringComparison.OrdinalIgnoreCase)))
-        .ToList();
+        var filteredItemsIn = AllItemsIn.Where(item =>
+           item.Id!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+           item.SerialNumber!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+           item.Device!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+           item.Device.Category!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+           item.Device.Manufacturer!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+           (item.CommentIn?.Contains(search, StringComparison.OrdinalIgnoreCase) == true)
+        ).ToList();
 
         ItemsIn = new ObservableCollection<Item>(filteredItemsIn);
 
         var filteredItemsOut = AllItemsOut.Where(item =>
-        (item.Id!.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
-        (item.SerialNumber!.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
-        (item.Device!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
-        item.Device.Category!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-        item.Device.Manufacturer!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-        (item.CommentOut != null && item.CommentOut.Contains(search, StringComparison.OrdinalIgnoreCase)))
-        .ToList();
+            item.Id!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+            item.SerialNumber!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+            item.Device!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+            item.Device.Category!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+            item.Device.Manufacturer!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+            (item.CommentOut?.Contains(search, StringComparison.OrdinalIgnoreCase) == true)
+        ).ToList();
 
         ItemsOut = new ObservableCollection<Item>(filteredItemsOut);
     }

@@ -1,13 +1,23 @@
-﻿using WerkstattlagerAPI;
+﻿using Microsoft.Extensions.DependencyInjection;
+using WerkstattlagerAPI;
 using WerkstattlagerViewLogic.ViewModels;
+using Xunit.Abstractions;
+using Xunit.Sdk;
 
 namespace WerkstattlagerIntegration.Tests
 {
-    public class InventoryTest(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
+    public class InventoryTest : TestBase, IClassFixture<DatabaseFixture>
     {
-        private readonly Inventory _inventory = new();
-        private readonly DatabaseFixture _fixture = fixture;
-        private readonly InventoryContext _context = fixture.Context;
+        private readonly Inventory _inventory;
+        private readonly DatabaseFixture _fixture;
+        private readonly InventoryContext _context;
+
+        public InventoryTest(DatabaseFixture fixture, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+            _fixture = fixture;
+            _context = fixture.Context;
+            _inventory = RootServiceProvider.GetRequiredService<Inventory>();
+        }
 
         [Fact]
         public async Task TestCreateItem()

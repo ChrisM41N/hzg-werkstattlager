@@ -1,18 +1,27 @@
-﻿using System;
+﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WerkstattlagerAPI;
 using WerkstattlagerViewLogic.ViewModels;
+using Xunit.Abstractions;
 
 namespace WerkstattlagerIntegration.Tests
 {
-    public class ManufacturerOverviewTest(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
+    public class ManufacturerOverviewTest : TestBase, IClassFixture<DatabaseFixture>
     {
-        private readonly ManufacturerOverview _manufacturerOverview = new();
-        private readonly DatabaseFixture _fixture = fixture;
-        private readonly InventoryContext _context = fixture.Context;
+        private readonly ManufacturerOverview _manufacturerOverview;
+        private readonly DatabaseFixture _fixture;
+        private readonly InventoryContext _context;
+
+        public ManufacturerOverviewTest(DatabaseFixture fixture, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+            _fixture = fixture;
+            _context = fixture.Context;
+            _manufacturerOverview = RootServiceProvider.GetRequiredService<ManufacturerOverview>();
+        }
 
         [Fact]
         public async Task TestAddManufacturer()
