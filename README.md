@@ -31,29 +31,3 @@ Zur Bedienung soll eine grafische Oberfläche für das Betriebssystem Windows 11
 Hier wird auf das Framework Windows Presentation Foundation (WPF) gesetzt, da hier bereits Erfahrungen vorhanden sind. Bei WPF bietet es sich an, das Projekt nach dem Model-View-ViewModel-Pattern zu kapseln. Microsoft bietet mit dem Community Toolkit eine umfassende Bibliothek mit diversen Helferklassen und Schnittstellen zur UI-Entwicklung. In diesem sind auch Werkzeuge für das MVVM-Pattern enthalten.
 
 Um die Kommunikation mit der Datenbank zu validieren und zukünftige Fehlerbehebung zu erleichtern, werden Integrationstests verfasst, die automatisiert den korrekten Datenaustausch zwischen Datenbank, Service und Logik sicherstellen. Zum Testen wird das Framework xUnit eingesetzt, eine Open-Source Bibliothek, die von Microsoft als Teil der .NET Foundation befürwortet wird.
-
-#### Datenmodell
-Das Datenmodell für die Geschäftslogik setzt sich aus vier Entitäten zusammen.
-
-Item steht für ein Gerät im Inventar. Die intern vergebene sechsstellige Inventarnummer wird als Primärschlüssel verwendet. Dazu kommen die Properties  für die Seriennummer, eine Referenz, welchem Gerätemodell das Item angehört, und ein Flag, ob das Gerät sich gerade im oder außerhalb des Lagers befindet. Dazu werden die Zeitstempel festgehalten, wann das Gerät das Lager zuletzt betreten oder verlassen hat. Für beide Fälle gibt es ein eigenes Kommentarfeld, in dem Informationen festgehalten werden können.
-
-Device ist das Gerätemodell - also die Gerätebezeichnung des Herstellers - das im Item referenziert wird. Es besitzt einen künstlichen Primärschlüssel und jeweils eine Referenz, von welchem Hersteller es stammt und welchem Gerätetypen es angehört.
-
-Category ist der Gerätetyp, der in jedem Gerät referenziert wird. Zum Beispiel Laptop, Monitor oder Thin Client. Intern hat jeder Gerätetyp ein Kürzel in Form eines Buchstabens. L für Laptop, M für Monitor, T für Thin Client. Dieses Kürzel wird auch als Primärschlüssel verwendet.
-
-Manufacturer ist der Hersteller des Gerätes, der in jedem Gerät referenziert wird. Identifiziert wird es über einen künstlichen Primärschlüssel.
-
-### Projektumsetzung
-Alle Teilprojekte werden in Visual Studio 2022 in der .NET-Version 8.0 in einer gemeinsamen Solution  erstellt.
-
-#### Teilprojekt 1: Klassenbibliothek - Datenbank API „WerkstattlagerAPI“
-Dieses Teilprojekt modelliert die Datenbank und stellt die Kommunikation zwischen Backend und Datenbank sicher.
-
-#### Teilprojekt 2: Klassenbibliothek - Darstellungslogik „WerkstattlagerViewLogic”
-Um die Daten aus der Datenbank an das Frontend zu übermitteln, werden in diesem Teilprojekt View-Models erstellt, in denen die Logik definiert wird, nach der die Daten bereitgestellt und verarbeitet werden und nach welchen Regeln sie später in der tatsächlichen Präsentation dargestellt werden sollen.
-
-#### Teilprojekt 3: xUnit - Integrationstests „WerkstattlagerIntegration“
-Um sicherzustellen, dass die View-Models mit der Datenbank so kommunizieren, wie es auch erwartet wird, werden Integrationstests geschrieben. Das ist Aufgabe des dritten Teilprojekts, das aus einem xUnit-Template erstellt wird.
-
-#### Teilprojekt 4: WPF - Nutzeroberfläche „WerkstattlagerUI“
-Dieses Teilprojekt kümmert sich darum, wie die Daten aus der Datenbank zur Anzeige gebracht werden.
