@@ -5,10 +5,10 @@ namespace WerkstattlagerUI.Views
 {
     public partial class NewRecordSelection : Window
     {
-        private readonly DeviceOverview _deviceOverview;
-        private readonly CategoryOverview _categoryOverview;
-        private readonly ManufacturerOverview _manufacturerOverview;
-        public NewRecordSelection(DeviceOverview deviceOverview, CategoryOverview categoryOverview, ManufacturerOverview manufacturerOverview)
+        private readonly DeviceViewModel _deviceOverview;
+        private readonly CategoryViewModel _categoryOverview;
+        private readonly ManufacturerViewModel _manufacturerOverview;
+        public NewRecordSelection(DeviceViewModel deviceOverview, CategoryViewModel categoryOverview, ManufacturerViewModel manufacturerOverview)
         {
             InitializeComponent();
             _deviceOverview = deviceOverview;

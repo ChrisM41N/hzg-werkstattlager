@@ -6,9 +6,9 @@ namespace WerkstattlagerUI.Views
 {
     public partial class CreateItemWindow : Window
     {
-        private readonly Inventory _inventory;
-        private readonly DeviceOverview _deviceOverview;
-        public CreateItemWindow(Inventory inventory, DeviceOverview deviceOverview)
+        private readonly InventoryViewModel _inventory;
+        private readonly DeviceViewModel _deviceOverview;
+        public CreateItemWindow(InventoryViewModel inventory, DeviceViewModel deviceOverview)
         {
             InitializeComponent();
 

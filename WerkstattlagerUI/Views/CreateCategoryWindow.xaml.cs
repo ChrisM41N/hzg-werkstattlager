@@ -6,8 +6,8 @@ namespace WerkstattlagerUI.Views
 {
     public partial class CreateCategoryWindow : Window
     {
-        private readonly CategoryOverview _categoryOverview;
-        public CreateCategoryWindow(CategoryOverview categoryOverview)
+        private readonly CategoryViewModel _categoryOverview;
+        public CreateCategoryWindow(CategoryViewModel categoryOverview)
         {
             InitializeComponent();
             _categoryOverview = categoryOverview;

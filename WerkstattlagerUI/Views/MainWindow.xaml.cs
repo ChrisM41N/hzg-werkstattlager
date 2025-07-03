@@ -8,12 +8,12 @@ namespace WerkstattlagerUI
 {
     public partial class MainWindow : Window
     {
-        private readonly Inventory _inventory;
-        private readonly DeviceOverview _deviceOverview;
-        private readonly CategoryOverview _categoryOverview;
-        private readonly ManufacturerOverview _manufacturerOverview;
+        private readonly InventoryViewModel _inventory;
+        private readonly DeviceViewModel _deviceOverview;
+        private readonly CategoryViewModel _categoryOverview;
+        private readonly ManufacturerViewModel _manufacturerOverview;
 
-        public MainWindow(Inventory inventory, DeviceOverview deviceOverview, CategoryOverview categoryOverview, ManufacturerOverview manufacturerOverview)
+        public MainWindow(InventoryViewModel inventory, DeviceViewModel deviceOverview, CategoryViewModel categoryOverview, ManufacturerViewModel manufacturerOverview)
         {
             InitializeComponent();
             _inventory = inventory;

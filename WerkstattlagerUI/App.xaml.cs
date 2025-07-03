@@ -11,10 +11,10 @@ namespace WerkstattlagerUI
         public App()
         {
             var services = new ServiceCollection();
-            services.AddSingleton<Inventory>();
-            services.AddSingleton<DeviceOverview>();
-            services.AddSingleton<CategoryOverview>();
-            services.AddSingleton<ManufacturerOverview>();
+            services.AddSingleton<InventoryViewModel>();
+            services.AddSingleton<DeviceViewModel>();
+            services.AddSingleton<CategoryViewModel>();
+            services.AddSingleton<ManufacturerViewModel>();
             services.AddSingleton<MainWindow>();
 
             _serviceProvider = services.BuildServiceProvider();

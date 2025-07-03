@@ -10,7 +10,7 @@ namespace WerkstattlagerIntegration.Tests
 {
     public class DeviceOverviewTest(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
     {
-        private readonly DeviceOverview _deviceOverview = new();
+        private readonly DeviceViewModel _deviceOverview = new();
         private readonly DatabaseFixture _fixture = fixture;
         private readonly InventoryContext _context = fixture.Context;
 

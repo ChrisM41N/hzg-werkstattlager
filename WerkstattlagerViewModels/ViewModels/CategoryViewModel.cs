@@ -8,14 +8,14 @@ using WerkstattlagerAPI.Models;
 
 namespace WerkstattlagerViewLogic.ViewModels;
 
-public partial class CategoryOverview : ObservableObject
+public partial class CategoryViewModel : ObservableObject
 {
     [ObservableProperty] private Category? selectedCategory;
     public ObservableCollection<Category> Categories { get; set; } = [];
 
     public event Action<string>? Error;
 
-    public CategoryOverview()
+    public CategoryViewModel()
     {
         _ = ReadCategories();
     }

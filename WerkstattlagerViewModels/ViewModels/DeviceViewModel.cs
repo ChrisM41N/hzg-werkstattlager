@@ -9,14 +9,14 @@ using WerkstattlagerAPI.Models;
 
 namespace WerkstattlagerViewLogic.ViewModels;
 
-public partial class DeviceOverview : ObservableObject
+public partial class DeviceViewModel : ObservableObject
 {
     [ObservableProperty] private Device? selectedDevice;
     public ObservableCollection<Device> Devices { get; set; } = [];
 
     public event Action<string>? Error;
 
-    public DeviceOverview()
+    public DeviceViewModel()
     {
         _ = ReadDevices();
     }

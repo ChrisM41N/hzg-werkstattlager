@@ -6,8 +6,8 @@ namespace WerkstattlagerUI.Views
 {
     public partial class CreateManufacturerWindow : Window
     {
-        private readonly ManufacturerOverview _manufacturerOverview;
-        public CreateManufacturerWindow(ManufacturerOverview manufacturerOverview)
+        private readonly ManufacturerViewModel _manufacturerOverview;
+        public CreateManufacturerWindow(ManufacturerViewModel manufacturerOverview)
         {
             InitializeComponent();
             _manufacturerOverview = manufacturerOverview;

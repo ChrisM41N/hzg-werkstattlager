@@ -7,10 +7,10 @@ namespace WerkstattlagerUI.Views
 
     public partial class CreateDeviceWindow : Window
     {
-        private readonly DeviceOverview _deviceOverview;
-        private readonly CategoryOverview _categoryOverview;
-        private readonly ManufacturerOverview _manufacturerOverview;
-        public CreateDeviceWindow(DeviceOverview deviceOverview, CategoryOverview categoryOverview, ManufacturerOverview manufacturerOverview)
+        private readonly DeviceViewModel _deviceOverview;
+        private readonly CategoryViewModel _categoryOverview;
+        private readonly ManufacturerViewModel _manufacturerOverview;
+        public CreateDeviceWindow(DeviceViewModel deviceOverview, CategoryViewModel categoryOverview, ManufacturerViewModel manufacturerOverview)
         {
             InitializeComponent();
             _deviceOverview = deviceOverview;

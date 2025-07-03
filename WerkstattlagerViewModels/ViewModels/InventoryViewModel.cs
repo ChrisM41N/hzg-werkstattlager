@@ -9,7 +9,7 @@ using WerkstattlagerAPI.Models;
 
 namespace WerkstattlagerViewLogic.ViewModels;
 
-public partial class Inventory : ObservableObject
+public partial class InventoryViewModel : ObservableObject
 {
     [ObservableProperty] private Item? selectedItem;
     [ObservableProperty] private string? searchText;
@@ -22,7 +22,7 @@ public partial class Inventory : ObservableObject
 
     public event Action<string>? Error;
 
-    public Inventory()
+    public InventoryViewModel()
     {
         _ = ReadItems();
     }
@@ -132,10 +132,9 @@ public partial class Inventory : ObservableObject
 
     public void SearchItems(string search)
     {
-         var filteredItemsIn = AllItemsIn.Where(item =>
-         item.Id!.Contains(
-            search, StringComparison.OrdinalIgnoreCase) ||
-        (item.SerialNumber!.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+        var filteredItemsIn = AllItemsIn.Where(item =>
+        item.Id!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+        item.SerialNumber!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
         item.Device!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
         item.Device.Category!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
         item.Device.Manufacturer!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
@@ -145,9 +144,9 @@ public partial class Inventory : ObservableObject
         ItemsIn = new ObservableCollection<Item>(filteredItemsIn);
 
         var filteredItemsOut = AllItemsOut.Where(item =>
-        (item.Id!.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
-        (item.SerialNumber!.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
-        (item.Device!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+        item.Id!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+        item.SerialNumber!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+        item.Device!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
         item.Device.Category!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
         item.Device.Manufacturer!.Description!.Contains(search, StringComparison.OrdinalIgnoreCase) ||
         (item.CommentOut != null && item.CommentOut.Contains(search, StringComparison.OrdinalIgnoreCase)))

@@ -5,9 +5,9 @@ namespace WerkstattlagerUI.Views
 {
     public partial class MoveItemWindow : Window
     {
-        private readonly Inventory _inventory;
+        private readonly InventoryViewModel _inventory;
 
-        public MoveItemWindow(Inventory inventory)
+        public MoveItemWindow(InventoryViewModel inventory)
         {
             InitializeComponent();
             _inventory = inventory;

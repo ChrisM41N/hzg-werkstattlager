@@ -5,7 +5,7 @@ namespace WerkstattlagerIntegration.Tests
 {
     public class InventoryTest(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
     {
-        private readonly Inventory _inventory = new();
+        private readonly InventoryViewModel _inventory = new();
         private readonly DatabaseFixture _fixture = fixture;
         private readonly InventoryContext _context = fixture.Context;
 

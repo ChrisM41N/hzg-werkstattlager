@@ -10,7 +10,7 @@ namespace WerkstattlagerIntegration.Tests
 {
     public class ManufacturerOverviewTest(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
     {
-        private readonly ManufacturerOverview _manufacturerOverview = new();
+        private readonly ManufacturerViewModel _manufacturerOverview = new();
         private readonly DatabaseFixture _fixture = fixture;
         private readonly InventoryContext _context = fixture.Context;
 

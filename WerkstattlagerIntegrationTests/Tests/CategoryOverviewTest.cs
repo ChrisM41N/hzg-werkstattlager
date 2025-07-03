@@ -11,7 +11,7 @@ namespace WerkstattlagerIntegration.Tests
 {
     public class CategoryOverviewTest(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
     {
-        private readonly CategoryOverview _categoryOverview = new();
+        private readonly CategoryViewModel _categoryOverview = new();
         private readonly DatabaseFixture _fixture = fixture;
         private readonly InventoryContext _context = fixture.Context;
 

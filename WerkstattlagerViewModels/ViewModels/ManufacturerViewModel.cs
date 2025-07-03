@@ -9,14 +9,14 @@ using WerkstattlagerAPI.Models;
 
 namespace WerkstattlagerViewLogic.ViewModels
 {
-    public partial class ManufacturerOverview : ObservableObject
+    public partial class ManufacturerViewModel : ObservableObject
     {
         [ObservableProperty] private Manufacturer? selectedManufacturer;
         public ObservableCollection<Manufacturer> Manufacturers { get; set; } = [];
 
         public event Action<string>? Error;
 
-        public ManufacturerOverview()
+        public ManufacturerViewModel()
         {
             _ = ReadManufacturers();
         }
