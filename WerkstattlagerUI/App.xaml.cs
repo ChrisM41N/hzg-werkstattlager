@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using System.Windows;
+using WerkstattlagerViewLogic;
 using WerkstattlagerViewLogic.ViewModels;
 
 namespace WerkstattlagerUI
@@ -11,10 +12,7 @@ namespace WerkstattlagerUI
         public App()
         {
             var services = new ServiceCollection();
-            services.AddSingleton<InventoryViewModel>();
-            services.AddSingleton<DeviceViewModel>();
-            services.AddSingleton<CategoryViewModel>();
-            services.AddSingleton<ManufacturerViewModel>();
+            services.AddWerkstattlager();
             services.AddSingleton<MainWindow>();
 
             _serviceProvider = services.BuildServiceProvider();

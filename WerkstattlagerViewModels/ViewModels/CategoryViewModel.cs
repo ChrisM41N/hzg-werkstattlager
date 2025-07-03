@@ -1,21 +1,22 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using WerkstattlagerAPI;
 using WerkstattlagerAPI.Models;
 
 namespace WerkstattlagerViewLogic.ViewModels;
 
-public partial class CategoryViewModel : ObservableObject
+public partial class CategoryViewModel : ViewModelBase
 {
     [ObservableProperty] private Category? selectedCategory;
-    public ObservableCollection<Category> Categories { get; set; } = [];
+    [ObservableProperty] private ObservableCollection<Category> categories = [];
 
     public event Action<string>? Error;
 
-    public CategoryViewModel()
+    public CategoryViewModel(IDbContextFactory<InventoryContext> dbContextFactory, ILogger<CategoryViewModel>? logger = null) : base(logger, dbContextFactory)
     {
         _ = ReadCategories();
     }
@@ -24,16 +25,15 @@ public partial class CategoryViewModel : ObservableObject
     {
         try
         {
-            using var context = new InventoryContext();
+            using var context = await DbContextFactory.CreateDbContextAsync();
             context.Categories.Add(newCategory);
             await context.SaveChangesAsync();
             Categories.Add(newCategory);
-            await ReadCategories();
         }
         catch (DbUpdateException DbException)
         {
-            string errorMessage = DbException.InnerException?.Message ?? DbException.Message;
-            Debug.WriteLine(errorMessage);
+            string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
+            Logger?.LogDebug(DbException, "{message}", errorMessage);
             Error?.Invoke(errorMessage);
         }
     }
@@ -41,26 +41,23 @@ public partial class CategoryViewModel : ObservableObject
     [RelayCommand]
     public async Task ReadCategories()
     {
-        using var context = new InventoryContext();
-        Categories.Clear();
-        var categories = await context.Categories.ToListAsync();
-        foreach (var category in categories)
-            Categories.Add(category);
+        using var context = await DbContextFactory.CreateDbContextAsync();
+        Categories = new(await context.Categories.ToListAsync());
     }
 
     public async Task UpdateCategory(Category updatedCategory)
     {
         try
         {
-            using var context = new InventoryContext();
+            using var context = await DbContextFactory.CreateDbContextAsync();
             context.Categories.Update(updatedCategory);
             await context.SaveChangesAsync();
             await ReadCategories();
         }
         catch (DbUpdateException DbException)
         {
-            string errorMessage = DbException.InnerException?.Message ?? DbException.Message;
-            Debug.WriteLine(errorMessage);
+            string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
+            Logger?.LogDebug(DbException, "{message}", errorMessage);
             Error?.Invoke(errorMessage);
         }
     }
@@ -68,22 +65,21 @@ public partial class CategoryViewModel : ObservableObject
     [RelayCommand]
     public async Task DeleteCategory()
     {
+        if (SelectedCategory == null)
+            return;
         try
         {
-            using var context = new InventoryContext();
-            if (SelectedCategory != null)
-            {
-                context.Categories.Remove(SelectedCategory);
-                await context.SaveChangesAsync();
-                Categories.Remove(SelectedCategory);
-                SelectedCategory = null;
-                await ReadCategories();
-            }
+            using var context = await DbContextFactory.CreateDbContextAsync();
+            context.Categories.Remove(SelectedCategory);
+            await context.SaveChangesAsync();
+            Categories.Remove(SelectedCategory);
+            SelectedCategory = null;
+            await ReadCategories();
         }
         catch (DbUpdateException DbException)
         {
-            string errorMessage = DbException.InnerException?.Message ?? DbException.Message;
-            Debug.WriteLine(errorMessage);
+            string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
+            Logger?.LogDebug(DbException, "{message}", errorMessage);
             Error?.Invoke(errorMessage);
         }
     }

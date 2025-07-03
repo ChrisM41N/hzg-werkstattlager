@@ -18,7 +18,7 @@ namespace WerkstattlagerUI.Views
             DataContext = _deviceOverview;
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (DeviceField.SelectedItem is Device device)
             {
@@ -30,7 +30,7 @@ namespace WerkstattlagerUI.Views
                     CommentIn = CommentField.Text,
                 };
 
-                _ = _inventory.CreateItem(item);
+                await _inventory.CreateItem(item);
                 Close();
             }
         }

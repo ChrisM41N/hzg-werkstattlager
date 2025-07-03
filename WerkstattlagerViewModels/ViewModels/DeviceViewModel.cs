@@ -2,21 +2,21 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using WerkstattlagerAPI;
 using WerkstattlagerAPI.Models;
 
 namespace WerkstattlagerViewLogic.ViewModels;
 
-public partial class DeviceViewModel : ObservableObject
+public partial class DeviceViewModel : ViewModelBase
 {
     [ObservableProperty] private Device? selectedDevice;
-    public ObservableCollection<Device> Devices { get; set; } = [];
+    [ObservableProperty] public ObservableCollection<Device> devices  = [];
 
     public event Action<string>? Error;
 
-    public DeviceViewModel()
+    public DeviceViewModel(IDbContextFactory<InventoryContext> dbContextFactory, ILogger<DeviceViewModel>? logger = null) : base(logger, dbContextFactory)
     {
         _ = ReadDevices();
     }
@@ -25,16 +25,15 @@ public partial class DeviceViewModel : ObservableObject
     {
         try
         {
-            using var context = new InventoryContext();
+            using var context = await DbContextFactory.CreateDbContextAsync();
             context.Devices.Add(newDevice);
             await context.SaveChangesAsync();
             Devices.Add(newDevice);
-            await ReadDevices();
         }
         catch(DbUpdateException DbException)
         {
             string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
-            Debug.WriteLine(errorMessage);
+            Logger?.LogDebug(DbException, "{message}", errorMessage);
             Error?.Invoke(errorMessage);
         }
     }
@@ -42,49 +41,45 @@ public partial class DeviceViewModel : ObservableObject
     [RelayCommand]
     public async Task ReadDevices()
     {
-        try
-        {
-            using var context = new InventoryContext();
-            Devices.Clear();
-            var devices = await context.Devices.Include(d => d.Category).Include(d => d.Manufacturer).ToListAsync();
-            foreach (var device in devices)
-                Devices.Add(device);
-        }
-        catch(DbUpdateException DbException)
-        {
-            string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
-            Debug.WriteLine(errorMessage);
-            Error?.Invoke(errorMessage);
-        }
+        using var context = await DbContextFactory.CreateDbContextAsync();
+        Devices = new(await context.Devices.Include(d => d.Category).Include(d => d.Manufacturer).ToListAsync());
     }
 
     public async Task UpdateDevice(Device updatedDevice)
     {
-        using var context = new InventoryContext();
-        context.Devices.Update(updatedDevice);
-        await context.SaveChangesAsync();
-        await ReadDevices();
+        try
+        {
+            using var context = await DbContextFactory.CreateDbContextAsync();
+            context.Devices.Update(updatedDevice);
+            await context.SaveChangesAsync();
+            await ReadDevices();
+        }
+        catch (DbUpdateException DbException)
+        {
+            string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
+            Logger?.LogDebug(DbException, "{message}", errorMessage);
+            Error?.Invoke(errorMessage);
+        }
     }
 
     [RelayCommand]
     public async Task DeleteDevice()
     {
+        if (SelectedDevice == null)
+            return;
         try
         {
-            using var context = new InventoryContext();
-            if (SelectedDevice != null)
-            {
-                context.Devices.Remove(SelectedDevice);
-                await context.SaveChangesAsync();
-                Devices.Remove(SelectedDevice);
-                SelectedDevice = null;
-                await ReadDevices();
-            }
+            using var context = await DbContextFactory.CreateDbContextAsync();
+            context.Devices.Remove(SelectedDevice!);
+            await context.SaveChangesAsync();
+            Devices.Remove(SelectedDevice!);
+            SelectedDevice = null;
+            await ReadDevices();
         }
         catch(DbUpdateException DbException)
         {
             string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
-            Debug.WriteLine(errorMessage);
+            Logger?.LogDebug(DbException, "{message}", errorMessage);
             Error?.Invoke(errorMessage);
         }
     }
