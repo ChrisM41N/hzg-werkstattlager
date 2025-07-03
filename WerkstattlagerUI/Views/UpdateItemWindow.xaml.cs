@@ -6,11 +6,11 @@ namespace WerkstattlagerUI
 {
     public partial class UpdateItemWindow : Window
     {
-        private readonly InventoryViewModel _inventory;
+        private readonly ItemViewModel _inventory;
         private readonly DeviceViewModel _deviceOverview;
         private readonly Item _item;
 
-        public UpdateItemWindow(InventoryViewModel inventory, DeviceViewModel deviceOverview, Item item)
+        public UpdateItemWindow(ItemViewModel inventory, DeviceViewModel deviceOverview, Item item)
         {
             InitializeComponent();
             _inventory = inventory;

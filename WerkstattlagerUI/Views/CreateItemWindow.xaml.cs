@@ -6,9 +6,9 @@ namespace WerkstattlagerUI.Views
 {
     public partial class CreateItemWindow : Window
     {
-        private readonly InventoryViewModel _inventory;
+        private readonly ItemViewModel _inventory;
         private readonly DeviceViewModel _deviceOverview;
-        public CreateItemWindow(InventoryViewModel inventory, DeviceViewModel deviceOverview)
+        public CreateItemWindow(ItemViewModel inventory, DeviceViewModel deviceOverview)
         {
             InitializeComponent();
 
@@ -18,7 +18,7 @@ namespace WerkstattlagerUI.Views
             DataContext = _deviceOverview;
         }
 
-        private async void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (DeviceField.SelectedItem is Device device)
             {
@@ -30,7 +30,7 @@ namespace WerkstattlagerUI.Views
                     CommentIn = CommentField.Text,
                 };
 
-                await _inventory.CreateItem(item);
+                _ = _inventory.CreateItem(item);
                 Close();
             }
         }

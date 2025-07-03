@@ -15,10 +15,10 @@ public static class Functions
     {
         return serviceCollection
             .AddDbContextFactory<InventoryContext>()
-            .AddSingleton<Inventory>()
-            .AddSingleton<DeviceOverview>()
-            .AddSingleton<CategoryOverview>()
-            .AddSingleton<ManufacturerOverview>()
+            .AddSingleton<ItemViewModel>()
+            .AddSingleton<DeviceViewModel>()
+            .AddSingleton<CategoryViewModel>()
+            .AddSingleton<ManufacturerViewModel>()
             ;
     }
 }

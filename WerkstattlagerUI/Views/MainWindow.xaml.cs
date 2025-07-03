@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using WerkstattlagerAPI.Models;
 using WerkstattlagerUI.Views;
@@ -9,12 +8,12 @@ namespace WerkstattlagerUI
 {
     public partial class MainWindow : Window
     {
-        private readonly InventoryViewModel _inventory;
+        private readonly ItemViewModel _inventory;
         private readonly DeviceViewModel _deviceOverview;
         private readonly CategoryViewModel _categoryOverview;
         private readonly ManufacturerViewModel _manufacturerOverview;
 
-        public MainWindow(InventoryViewModel inventory, DeviceViewModel deviceOverview, CategoryViewModel categoryOverview, ManufacturerViewModel manufacturerOverview)
+        public MainWindow(ItemViewModel inventory, DeviceViewModel deviceOverview, CategoryViewModel categoryOverview, ManufacturerViewModel manufacturerOverview)
         {
             InitializeComponent();
             _inventory = inventory;
@@ -31,17 +30,11 @@ namespace WerkstattlagerUI
             _deviceOverview.Error += message => MessageBox.Show(message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
             _categoryOverview.Error += message => MessageBox.Show(message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
             _manufacturerOverview.Error += message => MessageBox.Show(message, "Fehler", MessageBoxButton.OK, MessageBoxImage.Error);
-
-            App.Current.DispatcherUnhandledException += (sender, e) =>
-            {
-                MessageBox.Show(e.Exception.Message, "Unbehandelte Ausnahme", MessageBoxButton.OK, MessageBoxImage.Error);
-                e.Handled = true;
-            };
         }
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            ActivatorUtilities.CreateInstance<CreateItemWindow>(App.RootServiceProvider).ShowDialog();
+            new CreateItemWindow(_inventory, _deviceOverview).ShowDialog();
         }
 
         private void ResetButton_Click(object sender, RoutedEventArgs e)
@@ -52,14 +45,14 @@ namespace WerkstattlagerUI
         private void UpdateItem_Click (object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is Item item)
-                ActivatorUtilities.CreateInstance<UpdateItemWindow>(App.RootServiceProvider, item).ShowDialog();
+                new UpdateItemWindow(_inventory, _deviceOverview, item).ShowDialog();
         }
 
         private void MoveItem_Click(object sender, RoutedEventArgs e)
         {
             if (sender is Button button && button.DataContext is Item item)
             {
-                var moveItemWindow = ActivatorUtilities.CreateInstance<MoveItemWindow>(App.RootServiceProvider);
+                var moveItemWindow = new MoveItemWindow(_inventory);
                 if (item.IsInInventory)
                     moveItemWindow.Title = "Item auslagern";
                 else
@@ -70,7 +63,7 @@ namespace WerkstattlagerUI
 
         private void NewRecordButton_Click(object sender, RoutedEventArgs e)
         {
-            ActivatorUtilities.CreateInstance<NewRecordSelection>(App.RootServiceProvider).ShowDialog();
+            new NewRecordSelection(_deviceOverview, _categoryOverview, _manufacturerOverview).ShowDialog();
         }
 
         private void SearchBox_TextChanged(object sender, TextChangedEventArgs e)
