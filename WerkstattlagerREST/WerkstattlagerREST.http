@@ -1,0 +1,6 @@
+@WerkstattlagerREST_HostAddress = http://localhost:5107
+
+GET {{WerkstattlagerREST_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
