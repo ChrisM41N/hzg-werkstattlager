@@ -1,4 +1,6 @@
-﻿using WerkstattlagerAPI;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using WerkstattlagerAPI;
 using WerkstattlagerAPI.Models;
 
 namespace WerkstattlagerIntegration;

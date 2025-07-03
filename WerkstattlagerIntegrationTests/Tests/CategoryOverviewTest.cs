@@ -1,4 +1,7 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -6,19 +9,26 @@ using System.Text;
 using System.Threading.Tasks;
 using WerkstattlagerAPI;
 using WerkstattlagerViewLogic.ViewModels;
+using Xunit.Abstractions;
 
 namespace WerkstattlagerIntegration.Tests
 {
-    public class CategoryOverviewTest(DatabaseFixture fixture) : IClassFixture<DatabaseFixture>
+    public class CategoryOverviewTest : TestBase, IClassFixture<DatabaseFixture>
     {
-        private readonly CategoryOverview _categoryOverview = new();
-        private readonly DatabaseFixture _fixture = fixture;
-        private readonly InventoryContext _context = fixture.Context;
+        private readonly CategoryOverview _categoryOverview;
+        private readonly DatabaseFixture _fixture;
+        private readonly InventoryContext _context;
+
+        public CategoryOverviewTest(DatabaseFixture fixture, ITestOutputHelper testOutputHelper) : base(testOutputHelper)
+        {
+            _fixture = fixture;
+            _context = fixture.Context;
+            _categoryOverview = RootServiceProvider.GetRequiredService<CategoryOverview>();
+        }
 
         [Fact]
         public async Task TestCreateCategory()
         {
-            Debug.WriteLine(_fixture.categoryToBeAdded.Id);
             await _categoryOverview.CreateCategory(_fixture.categoryToBeAdded);
 
             var category = _context.Categories.FirstOrDefault(c => c.Id == _fixture.categoryToBeAdded.Id);

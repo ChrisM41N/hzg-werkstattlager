@@ -2,21 +2,21 @@
 using CommunityToolkit.Mvvm.Input;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using WerkstattlagerAPI;
 using WerkstattlagerAPI.Models;
 
 namespace WerkstattlagerViewLogic.ViewModels
 {
-    public partial class ManufacturerOverview : ObservableObject
+    public partial class ManufacturerOverview : ViewModelBase
     {
         [ObservableProperty] private Manufacturer? selectedManufacturer;
-        public ObservableCollection<Manufacturer> Manufacturers { get; set; } = [];
+        [ObservableProperty] private ObservableCollection<Manufacturer> manufacturers = [];
 
         public event Action<string>? Error;
 
-        public ManufacturerOverview()
+        public ManufacturerOverview(IDbContextFactory<InventoryContext> dbContextFactory, ILogger<ManufacturerOverview>? logger = null) : base(logger, dbContextFactory)
         {
             _ = ReadManufacturers();
         }
@@ -25,16 +25,15 @@ namespace WerkstattlagerViewLogic.ViewModels
         {
             try
             {
-                using var context = new InventoryContext();
+                using var context = await DbContextFactory.CreateDbContextAsync();
                 context.Manufacturers.Add(newManufacturer);
                 await context.SaveChangesAsync();
                 Manufacturers.Add(newManufacturer);
-                await ReadManufacturers();
             }
-            catch (Exception ex)
+            catch (Exception DbException)
             {
-                Debug.WriteLine(ex.Message);
-                string errorMessage = ex.InnerException is SqlException ? ex.InnerException.Message : ex.Message;
+                string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
+                Logger?.LogDebug(DbException, "{message}", errorMessage);
                 Error?.Invoke(errorMessage);
             }
         }
@@ -42,18 +41,15 @@ namespace WerkstattlagerViewLogic.ViewModels
         [RelayCommand]
         public async Task ReadManufacturers()
         {
-            using var context = new InventoryContext();
-            Manufacturers.Clear();
-            var manufacturers = await context.Manufacturers.ToListAsync();
-            foreach (var manufacturer in manufacturers)
-                Manufacturers.Add(manufacturer);
+            using var context = await DbContextFactory.CreateDbContextAsync();
+            Manufacturers = new(await context.Manufacturers.ToListAsync());
         }
 
         public async Task UpdateManufacturer(Manufacturer updatedManufacturer)
         {
             try
             {
-                using var context = new InventoryContext();
+                using var context = await DbContextFactory.CreateDbContextAsync();
                 context.Manufacturers.Update(updatedManufacturer);
                 await context.SaveChangesAsync();
                 await ReadManufacturers();
@@ -61,7 +57,7 @@ namespace WerkstattlagerViewLogic.ViewModels
             catch(DbUpdateException DbException)
             {
                 string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
-                Debug.WriteLine(errorMessage);
+                Logger?.LogDebug(DbException, "{message}", errorMessage);
                 Error?.Invoke(errorMessage);
             }
         }
@@ -69,22 +65,21 @@ namespace WerkstattlagerViewLogic.ViewModels
         [RelayCommand]
         public async Task DeleteManufacturer()
         {
+            if (SelectedManufacturer == null)
+                return;
             try
             {
-                using var context = new InventoryContext();
-                if (SelectedManufacturer != null)
-                {
-                    context.Manufacturers.Remove(SelectedManufacturer);
-                    await context.SaveChangesAsync();
-                    Manufacturers.Remove(SelectedManufacturer);
-                    SelectedManufacturer = null;
-                    await ReadManufacturers();
-                }
+                using var context = await DbContextFactory.CreateDbContextAsync();
+                context.Manufacturers.Remove(SelectedManufacturer!);
+                await context.SaveChangesAsync();
+                Manufacturers.Remove(SelectedManufacturer!);
+                SelectedManufacturer = null;
+                await ReadManufacturers();
             }
-            catch(DbUpdateException DbException)
+            catch (DbUpdateException DbException)
             {
                 string errorMessage = DbException.InnerException is SqlException sqlException ? sqlException.Message : DbException.Message;
-                Debug.WriteLine(errorMessage);
+                Logger?.LogDebug(DbException, "{message}", errorMessage);
                 Error?.Invoke(errorMessage);
             }
         }

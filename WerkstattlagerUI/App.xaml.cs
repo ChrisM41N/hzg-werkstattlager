@@ -1,28 +1,33 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using System.Windows;
+using WerkstattlagerAPI;
+using WerkstattlagerViewLogic;
 using WerkstattlagerViewLogic.ViewModels;
 
 namespace WerkstattlagerUI
 {
     public partial class App : Application
     {
-        private readonly IServiceProvider _serviceProvider;
+        public readonly static IServiceProvider RootServiceProvider;
 
-        public App()
+        static App()
         {
             var services = new ServiceCollection();
-            services.AddSingleton<Inventory>();
-            services.AddSingleton<DeviceOverview>();
-            services.AddSingleton<CategoryOverview>();
-            services.AddSingleton<ManufacturerOverview>();
+            services.AddWerkstattlager();
+            //services.AddLogging(builder =>
+            //{
+            //    builder.SetMinimumLevel(LogLevel.Debug);
+            //    builder.AddDebug();
+            //});
             services.AddSingleton<MainWindow>();
 
-            _serviceProvider = services.BuildServiceProvider();
+            RootServiceProvider = services.BuildServiceProvider();
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
-            _serviceProvider.GetRequiredService<MainWindow>().Show();
+            RootServiceProvider.GetRequiredService<MainWindow>().Show();
         }
     }
 }
