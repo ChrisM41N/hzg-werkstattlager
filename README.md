@@ -1,4 +1,4 @@
-# HZG-Werkstattlagera
+# HZG-Werkstattlager
 Meine betriebliche Projektarbeit und IHK-Abschlussprojekt. Aufgrund betrieblicher Umstrukturierungen wird das Projekt offiziell nicht weiterentwickelt oder produktiv eingesetzt, daher habe ich beschlossen den Quellcode hier öffentlich zu machen. Ich werde das Projekt in eigenem Interesse, als Lernprojekt, fortführen.
 
 Das Projekt, so wie es der IHK eingereicht wurde, bildet ein kleines Fullstack-Projekt, mit EF Core-Backend und WPF-Frontend, ab das innerhalb von 80 Stunden umgesetzt wurde. Unter dem Branch ihk-submission lässt sich Projekt in dem Zustand anschauen, in dem es eingereicht wurde.
