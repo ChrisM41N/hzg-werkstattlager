@@ -1,10 +1,10 @@
-# HZG-Werkstattlager
-Meine betriebliche Projektarbeit und IHK-Abschlussprojekt. Aufgrund betrieblicher Umstrukturierungen wird das Projekt nicht weiterentwickelt oder produktiv eingesetzt, daher habe ich beschlossen den Quellcode öffentlich zu archivieren.
+# HZG-Werkstattlagera
+Meine betriebliche Projektarbeit und IHK-Abschlussprojekt. Aufgrund betrieblicher Umstrukturierungen wird das Projekt offiziell nicht weiterentwickelt oder produktiv eingesetzt, daher habe ich beschlossen den Quellcode hier öffentlich zu machen. Ich werde das Projekt in eigenem Interesse, als Lernprojekt, fortführen.
 
-Das Projekt bildet ein kleines Fullstack-Projekt ab, dass innerhalb 80 Stunden umgesetzt wurde.
+Das Projekt, so wie es der IHK eingereicht wurde, bildet ein kleines Fullstack-Projekt, mit EF Core-Backend und WPF-Frontend, ab das innerhalb von 80 Stunden umgesetzt wurde. Unter dem Branch ihk-submission lässt sich Projekt in dem Zustand anschauen, in dem es eingereicht wurde.
 
 ## Starten der Anwendung
-Die Anwendung kann über das Projekt WerkstattlagerUI gestartet werden. Wenn kein ConnectionString gefunden wird, wird eine Datenbank im internen Speicher erstellt.
+Die Desktop-Anwendung kann über das Projekt WerkstattlagerUI gestartet werden. Wenn kein ConnectionString gefunden wird, wird eine Datenbank im internen Speicher erstellt.
 
 ## Auszüge aus der Projektdokumentation:
 ### Projekdefinition
