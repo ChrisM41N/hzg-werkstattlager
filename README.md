@@ -1,5 +1,5 @@
 # HZG-Werkstattlager
-Meine betriebliche Projektarbeit und IHK-Abschlussprojekt. Die Projektarbeit wurde vom IHK-Prüfungsausschuss anhand der offiziellen Dokumentation und Projektpräsentation und zusammen mit dem abschließenden Fachgespräch mit 93 Punkten (Note sehr gut) bewertet.
+Meine betriebliche Projektarbeit und IHK-Abschlussprojekt. Die Projektarbeit wurde vom IHK-Prüfungsausschuss mit 98 von 100 Punkten (Note sehr gut) bewertet.
 
 Aufgrund betrieblicher Umstrukturierungen wird das Projekt offiziell nicht weiterentwickelt oder produktiv eingesetzt, daher habe ich beschlossen den Quellcode hier öffentlich zu machen. Ich werde das Projekt in eigenem Interesse, als Lernprojekt, fortführen.
 
