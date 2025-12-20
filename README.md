@@ -3,7 +3,7 @@ Meine betriebliche Projektarbeit und IHK-Abschlussprojekt. Die Projektarbeit wur
 
 Aufgrund betrieblicher Umstrukturierungen wird das Projekt offiziell nicht weiterentwickelt oder produktiv eingesetzt, daher habe ich beschlossen den Quellcode hier öffentlich zu machen.
 
-Das Projekt, so wie es der IHK eingereicht wurde, bildet ein kleines Fullstack-Projekt mit EF-Core-Backend und WPF-Frontend ab, das innerhalb von 80 Stunden umgesetzt wurde. Unter dem Branch ihk-submission lässt sich Projekt in dem Zustand anschauen, in dem es eingereicht wurde.
+Das Projekt, so wie es der IHK eingereicht wurde, bildet ein kleines Fullstack-Projekt mit EF-Core-Backend und WPF-Frontend ab, das innerhalb von 80 Stunden umgesetzt wurde. Unter dem Branch ihk-submission lässt sich das Projekt in dem Zustand anschauen, in dem es eingereicht wurde.
 
 ## Starten der Anwendung
 Die Desktop-Anwendung kann über das Projekt WerkstattlagerUI gestartet werden. Wenn kein ConnectionString gefunden wird, wird eine Datenbank im internen Speicher erstellt.
@@ -20,7 +20,7 @@ Bei dem Projekt handelt es sich um ein internes Projekt für den Geschäftsberei
 Das Referat für IT-Service verfügt über einen Lagerraum, in dem rückläufige Hardware aufbewahrt wird. Hierbei geht es um Geräte von ausgeschiedenen Mitarbeitern oder Hardware, die durch modernere Systeme ersetzt wurde, soweit aber noch funktionsfähig ist. Die Geräte bleiben im Lager bis sie gegebenenfalls neue Verwendung finden, beispielsweise als Ersatz- oder Leihgeräte. Das Problem liegt darin, dass der Warenfluss im Lager nicht immer transparent verläuft und nirgendwo dokumentiert wird. Informationen zu den Geräten sind oft, sofern vorhanden, über das Ticket-System, das Client-Management-System oder physische Notizen verstreut. Die jährliche Inventur wird mühsam mit statischen Excel-Sheets festgehalten, die zu keinem Zeitpunkt aktuell sind. Wer Übersicht über den Bestand des Inventars haben möchte, dem bleibt nichts anderes übrig, als selbst im Lager nachzuschauen.
 
 #### Soll-Konzept
-Um dem Abhilfe zu verschaffen, soll das Inventar in einer relationalen Datenbank festgehalten werden. Dazu wird von dem Referat für IT-Infrastruktur eine Instanz auf einem Microsoft SQL Server bereitgestellt. Die Entscheidung für SQL-Server ist naheliegend, da es bereits im Betrieb produktiv eingesetzt wird. Zudem wird .NET   als Entwicklungsplattform gewählt, da hier die meisten Kenntnisse vorhanden sind. Beide Systeme stammen von Microsoft und harmonieren dementsprechend miteinander.
+Um dem Abhilfe zu verschaffen, soll das Inventar in einer relationalen Datenbank festgehalten werden. Dazu wird von dem Referat für IT-Infrastruktur eine Instanz auf einem Microsoft SQL Server bereitgestellt. Die Entscheidung für SQL-Server ist naheliegend, da es bereits im Betrieb produktiv eingesetzt wird. Zudem wird .NET als Entwicklungsplattform gewählt, da hier die meisten Kenntnisse vorhanden sind. Beide Systeme stammen von Microsoft und harmonieren dementsprechend miteinander.
 
 Im Datenmodell werden alle relevanten Informationen der Geräte gespeichert, darunter die intern vergebene Inventarnummer und die Seriennummer. Wenn ein Gerät ein- oder ausgeht, wird der Zeitstempel festgehalten, und in einem Kommentarfeld kann optional Kontext zum Warenfluss eingetragen werden.
 
